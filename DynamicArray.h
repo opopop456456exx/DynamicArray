@@ -16,9 +16,18 @@ extern int DynamicArrayInit(tDynamicArray * ptArr,int dwCapacity);
 extern int DynamicArrayPut(tDynamicArray * ptArr,int r,int data);
 extern int DynamicArrayGet(tDynamicArray * ptArr,int r);
 extern int DynamicArrayShow(tDynamicArray * ptArr);
-extern int DynamicArrayInsert(tDynamicArray * ptArr, int r, int data);
-extern int DynamicArrayDelet(tDynamicArray * ptArr, int r);
+extern int DynamicArrayInsert(tDynamicArray * ptArr, int r, int data);// O(n)
+extern int DynamicArrayDelet(tDynamicArray * ptArr, int r); //O(n)
 extern int DynamicArrayDestory(tDynamicArray * ptArr);
+
+extern int DynamicArrayPermute(tDynamicArray * ptArr);//置乱 O(n)
+extern int DynamicArraySort(tDynamicArray * ptArr);//排序 冒泡 O(n2)
+
+extern int DynamicArrayFind(tDynamicArray * ptArr,int src);//查找 O(n)
+extern int DynamicArrayDeduplicate(tDynamicArray * ptArr);//唯一化 O(n2)
+extern int DynamicArrayUniquify(tDynamicArray * ptArr);//唯一化 必须排序后使用 O(n)
+
+extern int DynamicArrayBinSearch(tDynamicArray * ptArr, int src);//二分查找  必须排序后使用 O(log(n))
 extern void test(void);
 
 #endif

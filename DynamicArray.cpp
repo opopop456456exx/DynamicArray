@@ -191,8 +191,202 @@ int DynamicArrayShow(tDynamicArray * ptArr)
 /************************************************************************/
 int DynamicArrayDestory(tDynamicArray * ptArr)
 {
-	free(ptArr->pdwA);
+	if (ptArr->pdwA != NULL)
+	{
+		free(ptArr->pdwA);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+
+/************************************************************************/
+/* Author   : DingFeng                     
+/* Data     : 2019/05/03
+/* Fuction	: 
+/* Remarks	:
+/* Others	:
+/************************************************************************/
+int DynamicArrayPermute(tDynamicArray * ptArr)
+{
+	int i,temp,tempidx;
+	if (ptArr->dwSize <=0)
+	{
+		return FALSE;
+	}
+	for (i = ptArr->dwSize; i > 0;i--)
+	{
+		tempidx = rand() % i;
+		temp = ptArr->pdwA[tempidx];
+		ptArr->pdwA[tempidx] = ptArr->pdwA[i - 1];
+		ptArr->pdwA[i - 1] = temp;
+	}
 	return TRUE;
+}
+
+
+
+
+/************************************************************************/
+/* Author   : DingFeng                     
+/* Data     : 2019/05/03
+/* Fuction	: 
+/* Remarks	:
+/* Others	:
+/************************************************************************/
+int DynamicArraySort(tDynamicArray * ptArr)
+{
+	int i,j, temp,doneflag;
+	if (ptArr->dwSize <= 0)
+	{
+		return FALSE;
+	}
+
+	for (j = 0; j < ptArr->dwSize ;j++)
+	{
+		doneflag = TRUE;
+		for (i = 0; i <ptArr->dwSize - 1; i++)
+		{
+			if (ptArr->pdwA[i] > ptArr->pdwA[i + 1])
+			{
+				temp = ptArr->pdwA[i];
+				ptArr->pdwA[i] = ptArr->pdwA[i + 1];
+				ptArr->pdwA[i + 1] = temp;
+				doneflag = FALSE;
+			}
+		}
+		if (doneflag == TRUE)
+		{
+			break;
+		}
+	}
+	return TRUE;
+}
+
+
+
+/************************************************************************/
+/* Author   : DingFeng                     
+/* Data     : 2019/05/04
+/* Fuction	:
+/* Remarks	:
+/* Others	:
+/************************************************************************/
+int DynamicArrayFind(tDynamicArray * ptArr, int src)
+{
+	int i;
+	if (ptArr->dwSize <= 0)
+	{
+		return -1;
+	}
+	for (i = ptArr->dwSize - 1; i >= 0;i--)
+	{
+		if (src == ptArr->pdwA[i])
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+
+/************************************************************************/
+/* Author   : DingFeng                     
+/* Data     : 2019/05/04
+/* Fuction	:
+/* Remarks	:
+/* Others	:
+/************************************************************************/
+int DynamicArrayDeduplicate(tDynamicArray * ptArr)
+{
+	int i,j;
+	if (ptArr->dwSize <= 0)
+	{
+		return FALSE;
+	}
+	for ( j = 0; j < ptArr->dwSize; j++)
+	{
+		for (i = 0; i < j; i++)
+		{
+			if (ptArr->pdwA[j] == ptArr->pdwA[i])
+			{
+				DynamicArrayDelet(ptArr,  j);
+			}
+		}
+	}
+	return TRUE;
+}
+
+
+/************************************************************************/
+/* Author   : DingFeng                     
+/* Data     : 2019/05/04
+/* Fuction	:
+/* Remarks	:
+/* Others	:
+/************************************************************************/
+int DynamicArrayUniquify(tDynamicArray * ptArr)
+{
+	int i, j;
+	if (ptArr->dwSize <= 1)
+	{
+		return FALSE;
+	}
+	i = 0;
+	j = 1;
+	while (j<ptArr->dwSize)
+	{
+		if (ptArr->pdwA[i] != ptArr->pdwA[j])
+		{
+			i++;
+			ptArr->pdwA[i] = ptArr->pdwA[j];
+		}
+		j++;
+	}
+	ptArr->dwSize = ++i;
+	return TRUE;
+}
+
+
+/************************************************************************/
+/* Author   : DingFeng                     
+/* Data     : 2019/05/04
+/* Fuction	:
+/* Remarks	:
+/* Others	:
+/************************************************************************/
+int DynamicArrayBinSearch(tDynamicArray * ptArr, int src)
+{
+	int dwmin,dwmid,dwmax;
+	if (ptArr->dwSize <= 0)
+	{
+		return -1;
+	}
+	dwmin = 0;
+	dwmax = ptArr->dwSize ;
+
+	while (dwmin<dwmax)
+	{
+		dwmid = (dwmin + dwmax) >>1;
+		//printf("\r\n		%d", dwmid);
+		if (ptArr->pdwA[dwmid] == src)
+		{
+			return dwmid;
+		}
+		else if (ptArr->pdwA[dwmid] > src)
+		{
+			dwmax = dwmid -1;
+		}
+		else
+		{
+			dwmin = dwmid + 1;
+		}
+	}
+
+	return -1;
+
 }
 /************************************************************************/
 /* Author   : DingFeng                     
