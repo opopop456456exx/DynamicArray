@@ -397,23 +397,38 @@ int DynamicArrayBinSearch(tDynamicArray * ptArr, int src)
 /************************************************************************/
 //void main(void)
 //{
-//	int i;
+//	int i, findidx;
 //	cout << "\r\n hello world" << endl;
 //	tDynamicArray tDyArr;
 //	DynamicArrayInit(&tDyArr, 10);
-//	for (i = 0; i < 1000; i++)
+//	for (i = 0; i < 100; i++)
 //	{
-//		DynamicArrayInsert(&tDyArr, i, i);
+//		DynamicArrayInsert(&tDyArr, i, i);//²åÈë
 //	}
-//	DynamicArrayInsert(&tDyArr, 0, 100);
+//	DynamicArrayInsert(&tDyArr, 0, 100);//²åÈë
 //	DynamicArrayShow(&tDyArr);
-//	DynamicArrayDelet(&tDyArr, 0);
-//	for (i = 0; i < 1000; i++)
+//	DynamicArrayDelet(&tDyArr, 0);//É¾³ý
+//
+//	DynamicArrayPermute(&tDyArr);//ÖÃÂÒ
+//
+//								 //DynamicArraySort(&tDyArr);//ÅÅÐò
+//
+//	for (i = 100; i < 200; i++)
 //	{
-//		DynamicArrayPut(&tDyArr, i, 999 - i);
+//		DynamicArrayInsert(&tDyArr, i, i - 100);//²åÈë
 //	}
+//
+//	DynamicArraySort(&tDyArr);//ÅÅÐò
+//
 //	DynamicArrayShow(&tDyArr);
 //
+//	DynamicArrayUniquify(&tDyArr);
+//
+//	//DynamicArrayDeduplicate(&tDyArr);//Î¨Ò»»¯
+//
+//	DynamicArrayShow(&tDyArr);
+//	findidx = DynamicArrayBinSearch(&tDyArr, FINDNUM);
+//	printf("\r\n Find %d at %d", FINDNUM, findidx);
 //	DynamicArrayDestory(&tDyArr);
 //	system("PAUSE");
 //	return;
