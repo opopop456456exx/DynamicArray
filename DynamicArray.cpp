@@ -235,31 +235,34 @@ int DynamicArrayPermute(tDynamicArray * ptArr)
 /* Remarks	:
 /* Others	:
 /************************************************************************/
-int DynamicArraySort(tDynamicArray * ptArr)
+int DynamicArraySort(tDynamicArray * ptArr)  //改进版
 {
-	int i,j, temp,doneflag;
+	int i, temp,doneflag,searchmax;
 	if (ptArr->dwSize <= 0)
 	{
 		return FALSE;
 	}
+	searchmax = ptArr->dwSize;
 
-	for (j = 0; j < ptArr->dwSize ;j++)
+	//for (j = 0; j < ptArr->dwSize;j++)
+	while(searchmax>0)
 	{
-		doneflag = TRUE;
-		for (i = 0; i <ptArr->dwSize - 1; i++)
+		doneflag = 0;
+		for (i = 0; i <searchmax - 1; i++)
 		{
 			if (ptArr->pdwA[i] > ptArr->pdwA[i + 1])
 			{
 				temp = ptArr->pdwA[i];
 				ptArr->pdwA[i] = ptArr->pdwA[i + 1];
 				ptArr->pdwA[i + 1] = temp;
-				doneflag = FALSE;
+				doneflag = i + 1;
 			}
 		}
-		if (doneflag == TRUE)
-		{
-			break;
-		}
+		searchmax = doneflag;
+		//if (doneflag == TRUE)
+		//{
+		//	break;
+		//}
 	}
 	return TRUE;
 }
@@ -357,35 +360,115 @@ int DynamicArrayUniquify(tDynamicArray * ptArr)
 /* Remarks	:
 /* Others	:
 /************************************************************************/
-int DynamicArrayBinSearch(tDynamicArray * ptArr, int src)
+int DynamicArrayBinSearch(tDynamicArray * ptArr, int src)  //优化，支持稳定查找，总返回相同内容中秩最大者
 {
-	int dwmin,dwmid,dwmax;
+	int dwmin,dwmid,dwmax,flag;
 	if (ptArr->dwSize <= 0)
 	{
 		return -1;
 	}
+	
 	dwmin = 0;
 	dwmax = ptArr->dwSize ;
-
+	flag = 0;
 	while (dwmin<dwmax)
 	{
 		dwmid = (dwmin + dwmax) >>1;
-		//printf("\r\n		%d", dwmid);
-		if (ptArr->pdwA[dwmid] == src)
+		
+		//if (ptArr->pdwA[dwmid] == src)
+		//{
+		//	res = dwmid;
+		//}
+		if (ptArr->pdwA[dwmid] > src)
 		{
-			return dwmid;
-		}
-		else if (ptArr->pdwA[dwmid] > src)
-		{
-			dwmax = dwmid -1;
+			dwmax = dwmid ;
 		}
 		else
 		{
+			if ((ptArr->pdwA[dwmid] == src)&&(flag == 0))
+			{
+				flag = 1;
+			}
 			dwmin = dwmid + 1;
+			//printf("\r\n		%d", dwmin);
+		}
+	}
+	if (flag==1)
+	{
+		dwmin = dwmin - 1;
+		return dwmin;
+	}
+	else
+	{
+		return -1;
+	}
+
+
+}
+/************************************************************************/
+/* Author   : DingFeng
+/* Data     : 2019/05/05
+/* Fuction	:
+/* Remarks	:
+/* Others	:
+/************************************************************************/
+static void DynamicArrayMerge(int * ptArrL1,int sizeL1, int * ptArrL2, int sizeL2)
+{
+	int *temp;
+	int i, j,k;
+
+	temp = (int*)malloc(sizeof(int)*sizeL1);
+
+	for (i = 0; i < sizeL1;i++)
+	{
+		temp[i] = ptArrL1[i];  //复制前向子向量
+	}
+
+	i = 0;
+	j = 0;
+	k = 0;
+
+	while ((i<sizeL1)&&(j<sizeL2))
+	{
+		if (temp[i]<= ptArrL2[j])
+		{
+			ptArrL1[k++] = temp[i++];
+		}
+		else
+		{
+			ptArrL1[k++] = ptArrL2[j++];
 		}
 	}
 
-	return -1;
+	while (i<sizeL1)
+	{
+		ptArrL1[k++] = temp[i++];
+	}
+	while (j<sizeL2)
+	{
+		ptArrL1[k++] = ptArrL2[j++];
+	}
+
+	free(temp);
+}
+
+void DynamicArrayMergeSort(int * ptArr, int sizeL)
+{
+	int *ptArrL1;
+	int *ptArrL2;
+	int sizeL1;
+	int sizeL2;
+	if (sizeL>1)
+	{
+		ptArrL1 = ptArr;
+		sizeL1 = sizeL / 2;
+		ptArrL2 = ptArr + sizeL1;
+		sizeL2 = sizeL - sizeL1;
+		DynamicArrayMergeSort(ptArrL1, sizeL1);
+		DynamicArrayMergeSort(ptArrL2, sizeL2);
+
+		DynamicArrayMerge(ptArrL1, sizeL1, ptArrL2, sizeL2);
+	}
 
 }
 /************************************************************************/
@@ -418,15 +501,15 @@ int DynamicArrayBinSearch(tDynamicArray * ptArr, int src)
 //		DynamicArrayInsert(&tDyArr, i, i - 100);//插入
 //	}
 //
-//	DynamicArraySort(&tDyArr);//排序
-//
+//	//DynamicArraySort(&tDyArr);//排序
+//	DynamicArrayMergeSort(tDyArr.pdwA, tDyArr.dwSize);
 //	DynamicArrayShow(&tDyArr);
 //
-//	DynamicArrayUniquify(&tDyArr);
+//	//DynamicArrayUniquify(&tDyArr);
 //
 //	//DynamicArrayDeduplicate(&tDyArr);//唯一化
 //
-//	DynamicArrayShow(&tDyArr);
+//	//DynamicArrayShow(&tDyArr);
 //	findidx = DynamicArrayBinSearch(&tDyArr, FINDNUM);
 //	printf("\r\n Find %d at %d", FINDNUM, findidx);
 //	DynamicArrayDestory(&tDyArr);

@@ -22,6 +22,7 @@ extern int DynamicArrayDestory(tDynamicArray * ptArr);
 
 extern int DynamicArrayPermute(tDynamicArray * ptArr);//÷√¬“ O(n)
 extern int DynamicArraySort(tDynamicArray * ptArr);//≈≈–Ú √∞≈› O(n2)
+extern void DynamicArrayMergeSort(int * ptArr, int sizeL);//≤¢πÈ≈≈–Ú  O(nlogn)  ø’º‰O(n)
 
 extern int DynamicArrayFind(tDynamicArray * ptArr,int src);//≤È’“ O(n)
 extern int DynamicArrayDeduplicate(tDynamicArray * ptArr);//Œ®“ªªØ O(n2)
